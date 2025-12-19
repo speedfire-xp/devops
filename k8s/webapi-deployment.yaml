@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapi
+  template:
+    metadata:
+      labels:
+        app: webapi
+    spec:
+      containers:
+      - name: webapi
+        image: webapi-app:latest 
+        imagePullPolicy: Never 
+        ports:
+        - containerPort: 8080 
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ConnectionStrings__DefaultConnection
+            value: Host=db;Port=5432;Database=moja_baza_danych;Username=moj_uzytkownik;Password=super_tajne_haslo_123

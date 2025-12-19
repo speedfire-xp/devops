@@ -1,0 +1,28 @@
+services:
+  webapi:
+    build: .
+    container_name: moja_aplikacja_api
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=moja_baza_danych;Username=moj_uzytkownik;Password=super_tajne_haslo_123
+    
+    depends_on:
+      - db
+
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: moja_baza_db
+    environment:
+      - POSTGRES_USER=moj_uzytkownik
+      - POSTGRES_PASSWORD=super_tajne_haslo_123
+      - POSTGRES_DB=moja_baza_danych
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
